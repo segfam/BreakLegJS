@@ -1,3 +1,4 @@
+import '../loadEnv.js';
 import { test } from '@playwright/test';
 import { HomePage } from '../pages/HomePage.js';
 
