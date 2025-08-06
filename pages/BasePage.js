@@ -1,5 +1,3 @@
-import { expect } from '@playwright/test';
-
 export class BasePage {
   constructor(page) {
     this.page = page;
@@ -9,15 +7,21 @@ export class BasePage {
     await this.page.goto(url);
   }
 
-  async expectTitle(title) {
-    await this.page.waitForLoadState('load');
-    await expect(this.page).toHaveTitle(title);
+  async getTitle() {
+    return this.page.title();
   }
 
-  async expectURL(expectedUrl) {
-    const currentUrl = this.page.url();
-    if (currentUrl !== expectedUrl) {
-      throw new Error(`URL mismatch: expected "${expectedUrl}", got "${currentUrl}"`);
-    }
+  async getURL() {
+    return this.page.url();
   }
+
+  async isElementVisible(locator) {
+  try {
+    return await locator.isVisible();
+  } catch (error) {
+    console.error('Visibility check failed:', error);
+    return false;
+  }
+}
+
 }

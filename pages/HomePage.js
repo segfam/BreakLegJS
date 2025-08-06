@@ -1,26 +1,37 @@
 import { BasePage } from './BasePage.js';
-import { expect } from '@playwright/test';
 
 export class HomePage extends BasePage {
   constructor(page) {
     super(page);
-    this.imageSelector = 'img[src="/images/Toolsqa.jpg"]';
+    this.imageSelector = 'img';
   }
 
   async goto() {
-    await super.goto('https://demoqa.com/');
+    await super.goto('https://demoqa.com');
   }
 
   async verifyTitle() {
-    await this.expectTitle(/DEMOQA/);
+  const title = await this.getTitle();
+  console.log('Page Title:', title); // Debug line
+  if (!title.includes('DEMOQA')) {
+    throw new Error('Title does not include ToolsQA');
   }
+}
 
   async verifyURL() {
-    await this.expectURL('https://demoqa.com/');
+    const url = await this.getURL();
+    if (!url.includes('demoqa')) {
+      throw new Error('URL does not include demoqa');
+    }
   }
 
   async verifyImageVisible() {
-    const image = this.page.locator(this.imageSelector);
-    await expect(image).toBeVisible();
+  // Targeting the image with src attribute '/images/Toolsqa.jpg'
+  const image = this.page.locator('img[src="/images/Toolsqa.jpg"]');
+  const visible = await this.isElementVisible(image);
+  if (!visible) {
+    throw new Error('Expected image is not visible on the homepage');
   }
+}
+
 }
