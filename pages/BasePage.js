@@ -1,6 +1,6 @@
-const { expect } = require('@playwright/test');
+import { expect } from '@playwright/test';
 
-class BasePage {
+export class BasePage {
   constructor(page) {
     this.page = page;
   }
@@ -9,22 +9,15 @@ class BasePage {
     await this.page.goto(url);
   }
 
-  async getTitle() {
-    return this.page.title();
+  async expectTitle(title) {
+    await this.page.waitForLoadState('load');
+    await expect(this.page).toHaveTitle(title);
   }
 
-  async getURL() {
-    return this.page.url();
-  }
-
-  async expectTitle(expectedTitle) {
-    await expect(this.page).toHaveTitle(expectedTitle);
-  }
-
-  async expectURL(expectedURL) {
-    const currentURL = this.page.url();
-    expect(currentURL).toBe(expectedURL);
+  async expectURL(expectedUrl) {
+    const currentUrl = this.page.url();
+    if (currentUrl !== expectedUrl) {
+      throw new Error(`URL mismatch: expected "${expectedUrl}", got "${currentUrl}"`);
+    }
   }
 }
-
-module.exports = { BasePage };

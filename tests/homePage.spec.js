@@ -1,6 +1,6 @@
 // tests/homePage.spec.js
 import { test } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
+//import { HomePage } from '../pages/HomePage';
 
 test('verify demoQA site', async ({ page }) => {
   const homePage = new HomePage(page);

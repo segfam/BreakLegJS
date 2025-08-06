@@ -1,9 +1,10 @@
-const { expect } = require('@playwright/test');
-const { BasePage } = require('./BasePage');
+import { BasePage } from './BasePage.js';
+import { expect } from '@playwright/test';
 
-class HomePage extends BasePage {
+export class HomePage extends BasePage {
   constructor(page) {
-    super(page); // Call BasePage constructor
+    super(page);
+    this.imageSelector = 'img[src="/images/Toolsqa.jpg"]';
   }
 
   async goto() {
@@ -19,9 +20,7 @@ class HomePage extends BasePage {
   }
 
   async verifyImageVisible() {
-    const image = this.page.locator('img[src="/images/Toolsqa.jpg"]');
+    const image = this.page.locator(this.imageSelector);
     await expect(image).toBeVisible();
   }
 }
-
-module.exports = { HomePage };
